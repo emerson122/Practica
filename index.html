@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shifts</title>
+  <style>
+    /* Estilos generales del cuerpo y tipografía */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Estilos de las secciones */
+    .section {
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+/* Contenedor de tablas con desplazamiento horizontal */
+    .table-container {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+/* Envoltura de las tablas */
+    .table-wrapper {
+      flex: 0 0 auto;
+      margin-right: 10px;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+/* Estilos generales de todas las tablas */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    /* Estilos para encabezados y celdas de la tabla */
+    table th,
+    table td {
+      padding: 8px;
+      text-align: center; /* Alineación central */
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* Estilos responsivos para tablas en pantallas pequeñas */
+    @media screen and (max-width: 768px) {
+      .table-container {
+        flex-wrap: wrap;
+      }
+
+      /* Estilos para el encabezado */
+      .table-wrapper {
+        flex-basis: calc(50% - 10px);
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+    }
+/* Estilos para el encabezado */
+
+    .header {
+      text-align: center;
+      background-color: #333;
+      color: white;
+      padding: 20px 0;
+    }
+
+    .date {
+      font-size: 18px;
+      margin-top: 5px;
+    }
+
+    .header {
+      position: relative;
+    }
+/* Estilos para el panel de botones en el encabezado */
+    .btn-panel {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+/* Estilos de botones */
+    .btn {
+      margin-left: 10px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    
+
+     /* Estilos para los modales */
+     .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 700px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.modal-content label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="password"],
+.modal-content select {
+    width: calc(100% - 12px);
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-content select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-position: right 8px top 50%;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    padding-right: 32px;
+}
+
+.modal-content button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-content button:hover {
+    background-color: #45a049;
+}
+
+     /* Estilos para el campo de búsqueda */
+     .search-container {
+      margin-bottom: 20px;
+    }
+
+    .search-container input[type=text] {
+      padding: 8px;
+      margin-top: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }/* Estilos del switch */
+    .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+/* Estilos para el indicador del estado del switch */
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <div class="header">
+    <h1>SHIFTS</h1>
+    <div class="date">
+      <h3 id="fecha">Monday, January 8, 2024</h3>
+    </div>
+
+
+
+     <!-- Grupo de botones: Control Panel -->
+    <div class="btn-panel">
+
+      <div class="btn-group">
+      <!-- Grupo de botones: Control Panel -->
+        <form action="/auth" method="post">
+          <button class="btn btn-primary">Control Panel</button> 
+        </form>
+  
+      </div>
+       <!-- Grupo de botones: Cerrar Sesión -->
+      <div class="btn-group">
+     
+        <form action="/logout" method="post">
+          <input type="hidden" name="usr" value="<%= usr %>">
+          <button class="btn btn-secondary">Cerrar Sesión</button>
+        </form>
+ 
+      </div>
+      
+
+<!-- Botón para abrir el modal y registrar un turno -->
+      <div class="btn-group">
+        <button id="logShiftBtn" class="btn btn-success">Log Shift</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Fin  Grupo de botones: Control Panel -->
+
+  
+
+
+
+  <!-- Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Log Shift</h2>
+      <form action="/control-panel" method="post">
+
+        <!-- Campos de usuario y contraseña -->
+        <label for="userSelect">Username</label>
+        <br>
+        <input type="text" name="username" placeholder="Enter your username">
+        <br>
+        <label for="userSelect">Password</label>
+        <br>
+        <input type="password" name="password" placeholder="Enter your password">
+        <br>
+              <!-- Opción para trabajar desde casa (Home Office) -->
+        <label for="homeOffice">Will you be working a Home Office shift?</label>
+        <label class="switch" for="homeOffice">
+          <input type="checkbox" id="homeOffice" name="homeOffice" onclick="toggleValue()">
+          <span class="slider"></span>
+          <input type="hidden" id="homeOfficeValue" name="homeOfficeValue" value="0">
+        </label>
+        
+        
+        <!-- Boton para registrar un turno  -->
+        <button type="submit" id="entrarBtn">Enter shift</button>
+      </form>
+  </div>
+</div>
+
+      
+<!-- Sección L1 -->
+  <section class="section" id="L1">
+    <center>
+
+        <h2>Section L1</h2>
+    </center>
+      <!-- Contenedor de tabla -->
+    <div class="table-container">
+      <div class="table-wrapper">
+       <!-- Primera tabla: Honduras -->
+        <table>
+          <tr>
+            <th>Honduras</th>
+          </tr>
+          <!-- Datos de la tabla 1 -->
+   
+       
+              <tr>
+                <td>
+                  Emerson Ramos
+                  <span style="background-color: rgb(119, 3, 251); color: rgb(251, 251, 251);">HO</span>
+                </td>
+              </tr>
+              
+              
+         
+      
+        </table>
+      </div>
+      <!-- segunda tabla Horizontal -->
+      <div class="table-wrapper">
+        <table>
+             <!-- Segunda tabla: Colombia -->
+          <tr>
+            <th>Colombia</th>
+          </tr>
+          <!-- Datos de la tabla 2 -->
+       
+  
+              <tr>
+                <td>
+             Wilmer Leon
+                </td>
+              </tr>
+              <!-- Agregar más filas según la cantidad de datos -->
+        
+        </table>
+      </div>
+
+      <!-- Dos tablas adicionales -->
+      <!-- ... -->
+      <!-- Tercera tabla: Guatemala -->
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Guatemala</th>
+          </tr>
+        
+              <tr>
+             <td>
+              Angel Palacios
+             </td>
+       
+              </tr>
+      
+        </table>
+      </div>
+    </div>
+  </section>
+
+<!-- Sección L2 -->
+  <section class="section" id="L2">
+    <center>
+  <!-- Contenedor de tabla -->
+        <h2>Section L2</h2>
+    </center>
+    <div class="table-container">
+        <!-- Primera tabla: Guatemala -->
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Guatemala</th>
+          </tr>
+      
+              <tr>
+                <td> Diego Melendez
+                  <span style="background-color: rgb(119, 3, 251); color: rgb(251, 251, 251);">HO</span>
+                </td>
+              </tr>
+    
+        </table>
+        
+      </div>
+      <!-- segunda tabla Horizontal -->
+      <div class="table-wrapper">
+         <!-- Segunda tabla: Colombia -->
+        <table>
+          <tr>
+            <th>Colombia</th>
+          </tr>
+      
+              <tr>
+                <td>
+                  Daniela Gutierrez
+                </td>
+              </tr>
+ 
+          <!-- Más filas -->
+        </table>
+      </div>
+      <!-- Dos tablas adicionales -->
+      <!-- ... -->
+    </div>
+  </section>
+
+
+  <section class="section" id="MSS">
+    <center>
+<!-- Sección MSS -->
+        <h2>Section MSS</h2>
+    </center>
+    <div class="table-container">
+       <!-- Primera tabla: Guatemala -->
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Guatemala</th>
+          </tr>
+      
+              <tr>
+                <td>Emilio Cruz      <span style="background-color: rgb(119, 3, 251); color: rgb(251, 251, 251);">HO</span></td>
+              </tr>
+    
+        </table>
+        
+      </div>
+      <!-- segunda tabla Horizontal -->
+       <!-- Segunda tabla: Salvador -->
+      <div class="table-wrapper">
+        <table>
+          <tr>
+            <th>Salvador</th>
+          </tr>
+    
+              <tr>
+                <td> Silvia Batres</td>
+              </tr>
+   
+        </table>
+      </div>
+            <!-- segunda tabla Horizontal -->
+            <!-- Tercera tabla: Panamá -->
+            <div class="table-wrapper">
+              <table>
+                <tr>
+                  <th>Panamá</th>
+                </tr>
+             
+                    <tr>
+                      <td>Josue Tezen</td>
+                    </tr>
+                    <!-- Agregar más filas según la cantidad de datos -->
+
+              </table>
+            </div>
+      <!-- Dos tablas adicionales -->
+      <!-- ... -->
+    </div>
+  </section>
+
+
+
+  <!-- Archivo de script -->
+  <script src="/index-home.js"></script>
+</body>
+</html>

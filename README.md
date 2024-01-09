@@ -12,14 +12,14 @@ Este proyecto presenta una página web destinada a la gestión y visualización 
 
 ## Uso
 
-1. Clona este repositorio: `git clone https://github.com/tu_usuario/tu_repositorio.git`
+1. Clona este repositorio: `git clone https://github.com/`
 2. Abre el archivo `index.html` en tu navegador preferido.
 3. Explora las diferentes secciones y opciones disponibles.
 
 ## Capturas de Pantalla
 
 ![Página Principal](capturas/pagina_principal.png)
-_(Agrega capturas para mostrar la interfaz y funcionalidades)_
+
 
 ## Tecnologías Utilizadas
 
